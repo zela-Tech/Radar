@@ -127,3 +127,40 @@ class _TabButton extends StatelessWidget {
     );
   }
 }
+//login 
+class _LoginForm extends StatefulWidget {
+  final VoidCallback onSuccess;
+  const _LoginForm({super.key, required this.onSuccess});
+
+  @override
+  State<_LoginForm> createState() => _LoginFormState();
+}
+
+class _LoginFormState extends State<_LoginForm> {
+  final _formKey = GlobalKey<FormState>();
+  final _emailCtrl = TextEditingController();
+  final _passCtrl = TextEditingController();
+  bool _obscure = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children:[
+          const Text('Email'),
+          TextFormField(controller: _emailCtrl),
+          const SizedBox(height: 16),
+          const Text('Password'),
+          TextFormField(controller: _passCtrl, obscureText: _obscure),
+          const SizedBox(height: 24),
+          ElevatedButton(
+            onPressed: () {}, 
+            child: const Text('Sign In'),
+          ),
+        ],
+      ),
+    );
+  }
+}
