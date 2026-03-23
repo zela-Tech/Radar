@@ -29,21 +29,40 @@ class SplashScreen extends StatelessWidget {
           child: Stack(
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
+                padding: const EdgeInsets.symmetric(horizontal:28),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                
+
+                  children: [
+                    const SizedBox(height: 40),
+                      //centered logo +icom
+                    Center(
+                      child: Column(
+                        children: [
+                          //change this to a custom animated pulsing radar
+                          const Icon(Icons.radar, color:Colors.white, size: 100),
+                          const SizedBox(width:10),
+                          const Text(
+                            "RADAR",
+                            style: TextStyle(color: Colors.white,fontSize: 40,fontWeight: FontWeight.bold, letterSpacing: 2),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
+
+              const SizedBox(height: 80),
               //custom circle button
               Positioned(
-                bottom: 30,
-                right: 24,
+                bottom: 40,
+                right: 28,
                 child: GestureDetector(
                   onTap: () {Navigator.pushReplacementNamed(context, '/login');},
                   child: Container(
-                    width:60,
-                    height: 60,
+                    width:80,
+                    height: 80,
                     decoration: const BoxDecoration(
                       color: Colors.white,
                       shape: BoxShape.circle,
