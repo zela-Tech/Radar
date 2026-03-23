@@ -48,16 +48,27 @@ class DatabaseHelper {
     ''');
   }
   
-  // CREATE - Insert new item
+  // CREATE User/registration
   Future<int> createUser(User user) async {
     final db = await instance.database;
     return await db.insert('users', user.toMap());
   }
   
-  // READ - Get all items
-  Future<List<Map<String, dynamic>>> getAllItems() async {
-    final db = await database;
-    return await db.query('items', orderBy: 'created_at DESC');
+  // READ - get user by email(for login)
+  Future<User?> getUserByEmail(String email) async {
+    final db = await instance.database;
+
+    final maps = await db.query(
+      'users',
+      where: 'email = ?',
+      whereArgs: [email],
+    );
+
+    if(maps.isNotEmpty){
+      return User.fromMap(maps.first);
+    }else{
+      return null;
+    }
   }
   
   // READ - Get single item by ID
