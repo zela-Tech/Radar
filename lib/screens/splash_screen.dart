@@ -28,19 +28,13 @@ class SplashScreen extends StatelessWidget {
         child: SafeArea(
           child: Stack(
             children: [
-              const Text(
-                "RADAR",
-                style: TextStyle(color:Colors.white, fontSize: 32, fontWeight: FontWeight.bold),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                
+                ),
               ),
-
-              const SizedBox(height: 20),
-              const Text(
-                "Explore what's happening near you.",
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white70),
-              ),
-
-              const SizedBox(height: 40),
               //custom circle button
               Positioned(
                 bottom: 30,
