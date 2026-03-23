@@ -49,11 +49,34 @@ class SplashScreen extends StatelessWidget {
                         ],
                       ),
                     ),
+                    
+                    const SizedBox(height: 80),
+                    //main hero text
+                    RichText(
+                      text: const TextSpan(
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 50,
+                          fontWeight: FontWeight.w700, 
+                          height: 1.2,
+                        ),
+                        children: [
+                          TextSpan(text: "Explore\n"),
+                          TextSpan(text: "what’s\n"),
+                          TextSpan(text: "happening\n", 
+                            style: TextStyle(
+                              fontStyle: FontStyle.italic, 
+                              color: Color(0xFF9FB3BD)
+                            ),
+                          ),
+                          TextSpan(text:"near you."),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
 
-              const SizedBox(height: 80),
               //custom circle button
               Positioned(
                 bottom: 40,
