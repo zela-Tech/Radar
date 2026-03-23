@@ -1,6 +1,7 @@
 // Import required packages
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import '../models/user.dart';
 
 
 // DatabaseHelper class - Singleton pattern
@@ -33,20 +34,24 @@ class DatabaseHelper {
   
   // Create database tables
   Future _createDB(Database db, int version) async {
+    //For Users
     await db.execute('''
-      CREATE TABLE items (
+      CREATE TABLE users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT NOT NULL,
-        description TEXT,
+        name TEXT NOT NULL,
+        username TEXT UNIQUE NOT NULL,
+        email TEXT NOT NULL,
+        password TEXT NOT NULL,
+        bio TEXT,
         created_at TEXT NOT NULL
       )
     ''');
   }
   
   // CREATE - Insert new item
-  Future<int> createItem(Map<String, dynamic> item) async {
-    final db = await database;
-    return await db.insert('items', item);
+  Future<int> createUser(User user) async {
+    final db = await instance.database;
+    return await db.insert('users', user.toMap());
   }
   
   // READ - Get all items
