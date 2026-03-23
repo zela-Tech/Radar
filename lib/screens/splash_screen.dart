@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'auth_screen.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -82,7 +83,12 @@ class SplashScreen extends StatelessWidget {
                 bottom: 40,
                 right: 28,
                 child: GestureDetector(
-                  onTap: () {Navigator.pushReplacementNamed(context, '/login');},
+                  onTap: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (_) => const AuthScreen()),
+                    );
+                  },
                   child: Container(
                     width:80,
                     height: 80,

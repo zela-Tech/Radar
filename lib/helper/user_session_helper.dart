@@ -4,8 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SessionHelper {
   static const _keyUserId = 'user_id';
 
-  // ── Auth ──────────────────────────────────────────────────────────────────
-
+  // ── ---------------------------Auth ─────────────────────────────────────
   static Future<void> saveUserId(int id) async {
     final p = await SharedPreferences.getInstance();
     await p.setInt(_keyUserId, id);
