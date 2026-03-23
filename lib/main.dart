@@ -18,6 +18,7 @@ class RadarApp extends StatelessWidget {
         primaryColor: const Color.fromARGB(15, 137, 203, 253),
         scaffoldBackgroundColor: Colors.white,
       ),
+      home: const SplashScreen(),
     );
   }
 }
