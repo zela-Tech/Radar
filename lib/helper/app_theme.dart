@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 // added all  thecolors, text styles, and input decorations used throughout Radar.
 class AppTheme {
-  // ── Brand colors ──────────────────────────────────────────────────────────
+  // ── main/brand colors ───
   static const Color splashDark = Color.fromRGBO(1,1,13,1);// darkest navy
   static const Color splashMid  = Color.fromRGBO(15,46,68,1); //mid navy
   static const Color ctaGreen   = Color.fromRGBO(132,183,156,1); // Sign In/Get Started button
