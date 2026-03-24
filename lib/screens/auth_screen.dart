@@ -172,7 +172,7 @@ class _LoginFormState extends State<_LoginForm> {
   final _passCtrl = TextEditingController();
   bool _obscure = true;
   bool _loading = false;
-
+  //database validation and session persistence
   @override
   void dispose() {
     _emailCtrl.dispose();
@@ -217,7 +217,7 @@ class _LoginFormState extends State<_LoginForm> {
             decoration: InputDecoration(
               hintText: 'example@gmail.com',
               filled: true,
-              fillColor: const Color(0xFFF5F2EC),
+              fillColor: AppTheme.surface,
               contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -234,7 +234,7 @@ class _LoginFormState extends State<_LoginForm> {
             decoration: InputDecoration(
               hintText: 'Value',
               filled: true,
-              fillColor: const Color(0xFFF5F2EC),
+              fillColor: AppTheme.surface,
               contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -251,9 +251,26 @@ class _LoginFormState extends State<_LoginForm> {
             ),
           ),
           const SizedBox(height: 48),
-          ElevatedButton(
-            onPressed: _loading ? null : _submit,
-            child: const Text('Sign In'),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.ctaGreen,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              onPressed: _loading ? null : _submit,
+              child: _loading
+                  ? const SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                    )
+                  : const Text('Sign In'),
+            ),
           ),
         ],
       ),
