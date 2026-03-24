@@ -32,7 +32,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
+                    color: const Color.fromRGBO(255, 0, 0, 0.05),
                     blurRadius: 10,
                     offset: const Offset(0, -2),
                   ),
@@ -64,24 +64,24 @@ class _AuthScreenState extends State<AuthScreen> {
   Widget _buildHeader() {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(24, 70, 24, 40),
+      padding: const EdgeInsets.fromLTRB(24, 40, 24, 40),
       child: Column(
         children: [
           SizedBox(
-            width: 84,
-            height: 84,
+            width: 100,
+            height: 100,
             child: Image.asset(
               'assets/images/auth-logo.png',
               fit: BoxFit.contain,
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 15),
           const Text(
             'Go ahead and set up\nyour account',
-            textAlign: TextAlign.left,
+            textAlign: TextAlign.center,
             style: TextStyle(
-              color: Colors.white,
-              fontSize: 20,
+              color: AppTheme.primary,
+              fontSize: 25,
               fontWeight: FontWeight.w700,
               height: 1.25,
               letterSpacing: -0.3,
@@ -91,7 +91,7 @@ class _AuthScreenState extends State<AuthScreen> {
           const Text(
             'Sign in-up and find your next experience',
             textAlign: TextAlign.left,
-            style: TextStyle(color: Colors.white54, fontSize: 13),
+            style: TextStyle(color: AppTheme.tertiary, fontSize: 13),
           ),
         ],
       ),
@@ -103,8 +103,8 @@ class _AuthScreenState extends State<AuthScreen> {
   Widget _buildTabSwitcher() {
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFFF0EDE6),
-        borderRadius: BorderRadius.circular(10),
+        color: AppTheme.secondary,
+        borderRadius: BorderRadius.circular(25),
       ),
       padding: const EdgeInsets.all(4),
       child: Row(
@@ -153,7 +153,7 @@ class _TabButton extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 10),
           decoration: BoxDecoration(
             color: selected ? AppTheme.surface : Colors.transparent,
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(25),
             boxShadow: selected
                 ? [BoxShadow(color: const Color.fromARGB(19, 0, 0, 0), blurRadius: 4, offset: const Offset(0, 1))]
                 : null,
@@ -273,7 +273,7 @@ class _LoginFormState extends State<_LoginForm> {
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppTheme.ctaGreen,
-                foregroundColor: Colors.white,
+                foregroundColor: AppTheme.primary,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -284,7 +284,7 @@ class _LoginFormState extends State<_LoginForm> {
                   ? const SizedBox(
                       height: 20,
                       width: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                      child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.primary),
                     )
                   : const Text('Sign In'),
             ),
@@ -448,7 +448,7 @@ class _RegisterFormState extends State<_RegisterForm> {
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppTheme.ctaGreen,
-                foregroundColor: Colors.white,
+                foregroundColor: AppTheme.primary,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -459,7 +459,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                   ? const SizedBox(
                       width: 20,
                       height: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                      child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.primary),
                     )
                   : const Text('GET STARTED'),
             ),
