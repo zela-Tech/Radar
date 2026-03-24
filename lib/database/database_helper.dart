@@ -95,12 +95,46 @@ class DatabaseHelper {
         FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
       )
     ''');
+
+    // missions
+    await db.execute('''
+      CREATE TABLE missions (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        description TEXT NOT NULL,
+        progress INTEGER NOT NULL DEFAULT 0,
+        is_completed INTEGER NOT NULL DEFAULT 0
+      )
+    ''');
+
+    //user stats
+    await db.execute('''
+      CREATE TABLE user_stats (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        events_attended INTEGER NOT NULL DEFAULT 0,
+        streak INTEGER NOT NULL DEFAULT 0,
+        FOREIGN KEY (user_id) REFERENCES users(id)
+      )
+    ''');
   }
   //seed data--------------------
   Future _seedInterests(Database db) async {
     final interests = ['Tech', 'Music', 'Sports', 'Arts', 'Career', 'Wellness', 'Food', 'Social'];
     for (final name in interests) {
       await db.insert('interests', {'name': name});
+    }
+  }
+
+  Future _seedMissions(Database db) async {
+    final missions = [
+      {'title': 'Tech Explorer', 'description': 'Attend 5 tech-related events this semester', 'progress': 0, 'is_completed': 0},
+      {'title': 'Social Connector', 'description': 'RSVP to 3 social or networking events', 'progress': 0, 'is_completed': 0},
+      {'title': 'Career Builder', 'description': 'Attend 4 career-focused events', 'progress': 0, 'is_completed': 0},
+      {'title': 'First Event', 'description': 'RSVP to your very first event on Radar', 'progress': 0, 'is_completed': 0},
+    ];
+    for (final m in missions) {
+      await db.insert('missions', m);
     }
   }
 
