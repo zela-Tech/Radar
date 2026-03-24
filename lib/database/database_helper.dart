@@ -117,6 +117,20 @@ class DatabaseHelper {
         FOREIGN KEY (user_id) REFERENCES users(id)
       )
     ''');
+
+     // Notifications
+    await db.execute('''
+      CREATE TABLE notifications (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        title TEXT NOT NULL,
+        message TEXT NOT NULL,
+        is_read INTEGER NOT NULL DEFAULT 0,
+        created_at TEXT NOT NULL,
+        FOREIGN KEY (user_id) REFERENCES users(id)
+      )
+    ''');
+
   }
   //seed data--------------------
   Future _seedInterests(Database db) async {
