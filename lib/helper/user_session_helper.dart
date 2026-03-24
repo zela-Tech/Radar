@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 // the sesion helper wraps SharedPreferences.ex.logied in user d, darkmode, notfication togle
 class SessionHelper {
   static const _keyUserId = 'user_id';
+  static const _keyOnboardingDone = 'onboarding_done';
 
   // ── ---------------------------Auth ─────────────────────────────────────
   static Future<void> saveUserId(int id) async {
@@ -37,5 +38,4 @@ class SessionHelper {
   }
 
   //settings
-  
 }
