@@ -4,6 +4,7 @@ import './main_navigator.dart';
 import '../helper/user_session_helper.dart';
 import './onboarding_screen.dart';
 import '../database/database_helper.dart';
+import '../models/user.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -272,6 +273,13 @@ class _LoginFormState extends State<_LoginForm> {
                   : const Text('Sign In'),
             ),
           ),
+          const SizedBox(height: 20),
+          Center(
+            child: TextButton(
+              onPressed: () {},
+              child: const Text('Forgot password?', style: TextStyle(color: AppTheme.muted, fontSize: 13)),
+            ),
+          ),
         ],
       ),
     );
@@ -293,6 +301,42 @@ class _RegisterFormState extends State<_RegisterForm> {
   final _userCtrl = TextEditingController();
   final _emailCtrl = TextEditingController();
   final _passCtrl = TextEditingController();
+  bool _obscure = true;
+  bool _loading = false;
+
+  @override
+  void dispose() {
+    _nameCtrl.dispose();
+    _userCtrl.dispose();
+    _emailCtrl.dispose();
+    _passCtrl.dispose();
+    super.dispose();
+  }
+
+  Future<void> _submit() async {
+    if (!(_formKey.currentState?.validate() ?? false)) return;
+    setState(() => _loading = true);
+    try {
+      final user = User(
+        name: _nameCtrl.text.trim(),
+        username: _userCtrl.text.trim(),
+        email: _emailCtrl.text.trim(),
+        password: _passCtrl.text,
+        createdAt: DateTime.now().toIso8601String(),
+      );
+      final id = await DatabaseHelper.instance.createUser(user);
+      await SessionHelper.saveUserId(id);
+      await widget.onSuccess(id);
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: ${e.toString()}'), backgroundColor: AppTheme.danger),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _loading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -309,7 +353,7 @@ class _RegisterFormState extends State<_RegisterForm> {
           const Text('Password'),
           TextFormField(controller: _passCtrl, obscureText: true),
           ElevatedButton(
-            onPressed: () {}, 
+            onPressed: _loading ? null : _submit,
             child: const Text('Get Started'),
           ),
         ],
