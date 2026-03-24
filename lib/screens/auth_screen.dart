@@ -25,7 +25,9 @@ class _AuthScreenState extends State<AuthScreen> {
               width: double.infinity,
               decoration: const BoxDecoration(
                 color: AppTheme.surface,
-                borderRadius: BorderRadius.vertical(top: Radius.zero),
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(28),
+                ),
               ),
               child: SingleChildScrollView(
                 padding: const EdgeInsets.fromLTRB(24, 24, 24, 40),
@@ -53,11 +55,11 @@ class _AuthScreenState extends State<AuthScreen> {
   Widget _buildHeader() {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(24, 60, 24, 32),
+      padding: const EdgeInsets.fromLTRB(24, 70, 24, 40),
       child: Column(
         children: [
           const Icon(Icons.radar, color: Colors.white, size: 64),
-          const SizedBox(height: 16),
+          const SizedBox(height: 20),
           const Text(
             'Go ahead and set up\nyour account',
             textAlign: TextAlign.left,
@@ -146,7 +148,7 @@ class _TabButton extends StatelessWidget {
             style: TextStyle(
               fontSize: 14,
               fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
-              color: selected ? AppTheme.ink : AppTheme.muted,
+              color: selected ? Colors.black : AppTheme.muted,
             ),
           ),
         ),
