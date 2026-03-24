@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import '../helper/app_theme.dart';
+import './main_navigator.dart';
+import '../helper/user_session_helper.dart';
+import './onboarding_screen.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -31,6 +34,12 @@ class _AuthScreenState extends State<AuthScreen> {
                   children: [
                     _buildTabSwitcher(),
                     const SizedBox(height: 24),
+                    AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 250),
+                      child: _tabIndex == 0
+                        ? _LoginForm(key: const ValueKey('login'), onSuccess: _onAuthSuccess)
+                        : _RegisterForm(key: const ValueKey('register'), onSuccess: _onRegisterSuccess),
+                    ),
                   ],
                 ),
               ),
@@ -88,6 +97,24 @@ class _AuthScreenState extends State<AuthScreen> {
       ),
     );
   }
+
+  void _onAuthSuccess() {
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const MainNav()));
+  }
+ 
+  Future<void> _onRegisterSuccess(int userId) async {
+    final onboardingDone = await SessionHelper.isOnboardingDone();
+    if (!mounted) return;
+    if (onboardingDone) {
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const MainNav()));
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => OnboardingScreen(userId: userId)),
+      );
+    }
+  }
+
 }
 
 
