@@ -157,8 +157,10 @@ class DatabaseHelper {
   //for user-----------------------
   // CREATE User/registration
   Future<int> createUser(User user) async {
-    final db = await instance.database;
-    return await db.insert('users', user.toMap());
+    final db = await database;
+    final id = await db.insert('users', user.toMap());
+    await db.insert('user_stats', {'user_id': id, 'events_attended': 0, 'streak': 0}); //this creates an  empty stats  for new user
+    return id;
   }
 
   
@@ -178,7 +180,88 @@ class DatabaseHelper {
       return null;
     }
   }
-  
+
+  Future<User?> getUserById(int id) async {
+    final db = await database;
+    final maps = await db.query('users', where: 'id = ?', whereArgs: [id]);
+    if (maps.isEmpty) return null;
+    return User.fromMap(maps.first);
+  }
+
+  Future<int> updateUser(User user) async {
+    final db = await database;
+    return await db.update('users', user.toMap(), where: 'id = ?', whereArgs: [user.id]);
+  }
+
+
+
+  //intrests---------------------------
+  // Get all interests for onboarding chip grid
+  Future<List<Map<String, dynamic>>> getAllInterests() async {
+    final db = await database;
+    return await db.query('interests');
+  }
+  //save which interests a user selected on onboarding
+  Future<void> saveUserInterests(int userId, List<int> interestIds) async {
+    final db = await database;
+    // Clear existing first (in case of re-edit)
+    await db.delete('user_interests', where: 'user_id = ?', whereArgs: [userId]);
+    for (final id in interestIds) {
+      await db.insert('user_interests', {'user_id': userId, 'interest_id': id});
+    }
+  }
+
+  // get interest names for a given user. can be used for profile and ai spark
+  Future<List<String>> getUserInterestNames(int userId) async {
+    final db = await database;
+    final res = await db.rawQuery('''
+      SELECT i.name FROM interests i
+      JOIN user_interests ui ON i.id = ui.interest_id
+      WHERE ui.user_id = ?
+    ''', [userId]);
+    return res.map((r) => r['name'] as String).toList();
+  }
+
+  //events------------------
+  Future<int> createEvent(Event event) async {
+    final db = await database;
+    return await db.insert('events', event.toMap());
+  }
+
+  Future<List<Event>> getAllEvents() async {
+    final db = await database;
+    final res = await db.query('events', orderBy: 'date ASC');
+    return res.map((r) => Event.fromMap(r)).toList();
+  }
+
+  Future<List<Event>> getEventsByCategory(String category) async {
+    final db = await database;
+    final res = await db.query('events', where: 'category = ?', whereArgs: [category], orderBy: 'date ASC');
+    return res.map((r) => Event.fromMap(r)).toList();
+  }
+
+  Future<Event?> getEventById(int id) async {
+    final db = await database;
+    final res = await db.query('events', where: 'id = ?', whereArgs: [id]);
+    if (res.isEmpty) return null;
+    return Event.fromMap(res.first);
+  }
+
+  Future<int> updateEvent(Event event) async {
+    final db = await database;
+    return await db.update('events', event.toMap(), where: 'id = ?', whereArgs: [event.id]);
+  }
+
+  Future<int> deleteEvent(int id) async {
+    final db = await database;
+    return await db.delete('events', where: 'id = ?', whereArgs: [id]);
+  }
+  //ai spark----------------------
+  //rsvp-----------------------
+  //missions-------------------
+  //users progres/stats----------------
+  //notifications--------------------
+
   // Close database connection
   Future close() async {
     final db = await database;
