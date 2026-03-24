@@ -164,3 +164,43 @@ class _LoginFormState extends State<_LoginForm> {
     );
   }
 }
+
+//registration
+class _RegisterForm extends StatefulWidget {
+  final Future<void> Function(int userId) onSuccess;
+  const _RegisterForm({super.key, required this.onSuccess});
+
+  @override
+  State<_RegisterForm> createState() => _RegisterFormState();
+}
+
+class _RegisterFormState extends State<_RegisterForm> {
+  final _formKey = GlobalKey<FormState>();
+  final _nameCtrl = TextEditingController();
+  final _userCtrl = TextEditingController();
+  final _emailCtrl = TextEditingController();
+  final _passCtrl = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: [
+          const Text('Name'),
+          TextFormField(controller: _nameCtrl),
+          const Text('Username'),
+          TextFormField(controller: _userCtrl),
+          const Text('Email'),
+          TextFormField(controller: _emailCtrl),
+          const Text('Password'),
+          TextFormField(controller: _passCtrl, obscureText: true),
+          ElevatedButton(
+            onPressed: () {}, 
+            child: const Text('Get Started'),
+          ),
+        ],
+      ),
+    );
+  }
+}
