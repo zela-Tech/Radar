@@ -25,11 +25,18 @@ class _AuthScreenState extends State<AuthScreen> {
           Expanded(
             child: Container(
               width: double.infinity,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 color: AppTheme.surface,
-                borderRadius: BorderRadius.vertical(
+                borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(28),
                 ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 10,
+                    offset: const Offset(0, -2),
+                  ),
+                ],
               ),
               child: SingleChildScrollView(
                 padding: const EdgeInsets.fromLTRB(24, 24, 24, 40),
@@ -60,7 +67,14 @@ class _AuthScreenState extends State<AuthScreen> {
       padding: const EdgeInsets.fromLTRB(24, 70, 24, 40),
       child: Column(
         children: [
-          const Icon(Icons.radar, color: Colors.white, size: 64),
+          SizedBox(
+            width: 84,
+            height: 84,
+            child: Image.asset(
+              'assets/images/auth-logo.png',
+              fit: BoxFit.contain,
+            ),
+          ),
           const SizedBox(height: 20),
           const Text(
             'Go ahead and set up\nyour account',
@@ -220,9 +234,10 @@ class _LoginFormState extends State<_LoginForm> {
               filled: true,
               fillColor: AppTheme.surface,
               contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide.none,
+              border: AppTheme.inputBorder,
+              enabledBorder: AppTheme.inputBorder,
+              focusedBorder: AppTheme.inputBorder.copyWith(
+                borderSide: BorderSide(color: AppTheme.border, width: 1.5),
               ),
             ),
             validator: (v) => (v == null || !v.contains('@')) ? 'Enter a valid email' : null,
@@ -237,9 +252,10 @@ class _LoginFormState extends State<_LoginForm> {
               filled: true,
               fillColor: AppTheme.surface,
               contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide.none,
+              border: AppTheme.inputBorder,
+              enabledBorder: AppTheme.inputBorder,
+              focusedBorder: AppTheme.inputBorder.copyWith(
+                borderSide: BorderSide(color: AppTheme.ctaGreen, width: 1.5),
               ),
               suffixIcon: IconButton(
                 icon: Icon(
@@ -353,9 +369,10 @@ class _RegisterFormState extends State<_RegisterForm> {
               filled: true,
               fillColor: AppTheme.surface,
               contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide.none,
+              border: AppTheme.inputBorder,
+              enabledBorder: AppTheme.inputBorder,
+              focusedBorder: AppTheme.inputBorder.copyWith(
+                borderSide: BorderSide(color: AppTheme.ctaGreen, width: 1.5),
               ),
             ),
             validator: (v) => (v == null || v.trim().isEmpty) ? 'Name is required' : null,
@@ -370,9 +387,10 @@ class _RegisterFormState extends State<_RegisterForm> {
               filled: true,
               fillColor: AppTheme.surface,
               contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide.none,
+              border: AppTheme.inputBorder,
+              enabledBorder: AppTheme.inputBorder,
+              focusedBorder: AppTheme.inputBorder.copyWith(
+                borderSide: BorderSide(color: AppTheme.ctaGreen, width: 1.5),
               ),
             ),
             validator: (v) => (v == null || v.trim().isEmpty) ? 'Username is required' : null,
@@ -388,9 +406,10 @@ class _RegisterFormState extends State<_RegisterForm> {
               filled: true,
               fillColor: AppTheme.surface,
               contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide.none,
+              border: AppTheme.inputBorder,
+              enabledBorder: AppTheme.inputBorder,
+              focusedBorder: AppTheme.inputBorder.copyWith(
+                borderSide: BorderSide(color: AppTheme.ctaGreen, width: 1.5),
               ),
             ),
             validator: (v) => (v == null || !v.contains('@')) ? 'Enter a valid email' : null,
@@ -406,9 +425,10 @@ class _RegisterFormState extends State<_RegisterForm> {
               filled: true,
               fillColor: AppTheme.surface,
               contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide.none,
+              border: AppTheme.inputBorder,
+              enabledBorder: AppTheme.inputBorder,
+              focusedBorder: AppTheme.inputBorder.copyWith(
+                borderSide: BorderSide(color: AppTheme.ctaGreen, width: 1.5),
               ),
               suffixIcon: IconButton(
                 icon: Icon(
