@@ -1,6 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-// the sesion helper wraps SharedPreferences.
+// the sesion helper wraps SharedPreferences.ex.logied in user d, darkmode, notfication togle
 class SessionHelper {
   static const _keyUserId = 'user_id';
 
@@ -23,6 +23,19 @@ class SessionHelper {
   static Future<void> logout() async {
     final p = await SharedPreferences.getInstance();
     await p.remove(_keyUserId);
+
+  }
+  // ------------------Onborading-----------------------------------------------------
+  static Future<void> setOnboardingDone() async {
+    final p = await SharedPreferences.getInstance();
+    await p.setBool(_keyOnboardingDone, true);
   }
 
+  static Future<bool> isOnboardingDone() async {
+    final p = await SharedPreferences.getInstance();
+    return p.getBool(_keyOnboardingDone) ?? false;
+  }
+
+  //settings
+  
 }
