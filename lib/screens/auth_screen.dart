@@ -3,6 +3,7 @@ import '../helper/app_theme.dart';
 import './main_navigator.dart';
 import '../helper/user_session_helper.dart';
 import './onboarding_screen.dart';
+import '../database/database_helper.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -170,6 +171,37 @@ class _LoginFormState extends State<_LoginForm> {
   final _emailCtrl = TextEditingController();
   final _passCtrl = TextEditingController();
   bool _obscure = true;
+  bool _loading = false;
+
+  @override
+  void dispose() {
+    _emailCtrl.dispose();
+    _passCtrl.dispose();
+    super.dispose();
+  }
+
+  Future<void> _submit() async {
+    if (!(_formKey.currentState?.validate() ?? false)) return;
+    setState(() => _loading = true);
+    try {
+      final user = await DatabaseHelper.instance.getUserByEmail(_emailCtrl.text.trim());
+      if (user == null || user.password != _passCtrl.text) {
+        _showError('Invalid email or password');
+        return;
+      }
+      await SessionHelper.saveUserId(user.id!);
+      widget.onSuccess();
+    } finally {
+      if (mounted) setState(() => _loading = false);
+    }
+  }
+  
+  void _showError(String msg) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(msg), backgroundColor: AppTheme.danger),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -220,7 +252,7 @@ class _LoginFormState extends State<_LoginForm> {
           ),
           const SizedBox(height: 48),
           ElevatedButton(
-            onPressed: () {}, 
+            onPressed: _loading ? null : _submit,
             child: const Text('Sign In'),
           ),
         ],
