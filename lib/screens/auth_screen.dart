@@ -179,11 +179,46 @@ class _LoginFormState extends State<_LoginForm> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children:[
           const Text('Email'),
-          TextFormField(controller: _emailCtrl),
-          const SizedBox(height: 16),
+          TextFormField(
+            controller: _emailCtrl,
+            keyboardType: TextInputType.emailAddress,
+            decoration: InputDecoration(
+              hintText: 'example@gmail.com',
+              filled: true,
+              fillColor: const Color(0xFFF5F2EC),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide.none,
+              ),
+            ),
+            validator: (v) => (v == null || !v.contains('@')) ? 'Enter a valid email' : null,
+          ),
+          const SizedBox(height: 20),
           const Text('Password'),
-          TextFormField(controller: _passCtrl, obscureText: _obscure),
-          const SizedBox(height: 24),
+          TextFormField(
+            controller: _passCtrl,
+            obscureText: _obscure,
+            decoration: InputDecoration(
+              hintText: 'Value',
+              filled: true,
+              fillColor: const Color(0xFFF5F2EC),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide.none,
+              ),
+              suffixIcon: IconButton(
+                icon: Icon(
+                  _obscure ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                  size: 20,
+                  color: AppTheme.muted,
+                ),
+                onPressed: () => setState(() => _obscure = !_obscure),
+              ),
+            ),
+          ),
+          const SizedBox(height: 48),
           ElevatedButton(
             onPressed: () {}, 
             child: const Text('Sign In'),
