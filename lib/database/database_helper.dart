@@ -256,7 +256,23 @@ class DatabaseHelper {
     final db = await database;
     return await db.delete('events', where: 'id = ?', whereArgs: [id]);
   }
-  //ai spark----------------------
+  //ai spark----------------------events matching user's interest categories not yet RSVP'd
+  Future<List<Event>> getSuggestedEvents(int userId) async {
+    final db = await database;
+    final interests = await getUserInterestNames(userId);
+    if (interests.isEmpty) return getAllEvents();
+    final placeholders = interests.map((_) => '?').join(', ');
+    final res = await db.rawQuery('''
+      SELECT e.* FROM events e
+      WHERE e.category IN ($placeholders)
+      AND e.id NOT IN (
+        SELECT event_id FROM rsvps WHERE user_id = ?
+      )
+      ORDER BY e.date ASC
+      LIMIT 10
+    ''', [...interests, userId]);
+    return res.map((r) => Event.fromMap(r)).toList();
+  }
   //rsvp-----------------------
   //missions-------------------
   //users progres/stats----------------
