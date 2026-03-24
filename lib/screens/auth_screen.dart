@@ -343,18 +343,106 @@ class _RegisterFormState extends State<_RegisterForm> {
     return Form(
       key: _formKey,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text('Name'),
-          TextFormField(controller: _nameCtrl),
+          TextFormField(
+            controller: _nameCtrl,
+            decoration: InputDecoration(
+              hintText: 'Value',
+              filled: true,
+              fillColor: AppTheme.surface,
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide.none,
+              ),
+            ),
+            validator: (v) => (v == null || v.trim().isEmpty) ? 'Name is required' : null,
+          ),
+          const SizedBox(height: 20),
+
           const Text('Username'),
-          TextFormField(controller: _userCtrl),
+          TextFormField(
+            controller: _userCtrl,
+            decoration: InputDecoration(
+              hintText: 'Value',
+              filled: true,
+              fillColor: AppTheme.surface,
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide.none,
+              ),
+            ),
+            validator: (v) => (v == null || v.trim().isEmpty) ? 'Username is required' : null,
+          ),
+          const SizedBox(height: 14),
+
           const Text('Email'),
-          TextFormField(controller: _emailCtrl),
+          TextFormField(
+            controller: _emailCtrl,
+            keyboardType: TextInputType.emailAddress,
+            decoration: InputDecoration(
+              hintText: 'example@gmail.com',
+              filled: true,
+              fillColor: AppTheme.surface,
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide.none,
+              ),
+            ),
+            validator: (v) => (v == null || !v.contains('@')) ? 'Enter a valid email' : null,
+          ),
+          const SizedBox(height: 14),
+
           const Text('Password'),
-          TextFormField(controller: _passCtrl, obscureText: true),
-          ElevatedButton(
-            onPressed: _loading ? null : _submit,
-            child: const Text('Get Started'),
+          TextFormField(
+            controller: _passCtrl,
+            obscureText: _obscure,
+            decoration: InputDecoration(
+              hintText: 'Value',
+              filled: true,
+              fillColor: AppTheme.surface,
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide.none,
+              ),
+              suffixIcon: IconButton(
+                icon: Icon(
+                  _obscure ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                  size: 20,
+                  color: AppTheme.muted,
+                ),
+                onPressed: () => setState(() => _obscure = !_obscure),
+              ),
+            ),
+            validator: (v) => (v == null || v.length < 6) ? 'Password must be at least 6 characters' : null,
+          ),
+          const SizedBox(height: 24),
+
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.ctaGreen,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              onPressed: _loading ? null : _submit,
+              child: _loading
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                    )
+                  : const Text('GET STARTED'),
+            ),
           ),
         ],
       ),
