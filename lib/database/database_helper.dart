@@ -19,7 +19,7 @@ class DatabaseHelper {
   // Get database instance
   Future<Database> get database async {
     if (_database != null) return _database!;
-    _database = await _initDB('myapp.db');
+    _database = await _initDB('radar.db');
     return _database!;
   }
   
@@ -131,10 +131,14 @@ class DatabaseHelper {
       )
     ''');
 
+    await _seedInterests(db);
+    await _seedMissions(db);
+
   }
   //seed data--------------------
   Future _seedInterests(Database db) async {
-    final interests = ['Tech', 'Music', 'Sports', 'Arts', 'Career', 'Wellness', 'Food', 'Social'];
+    final interests = [ 'Tech', 'Music', 'Sports', 'Arts', 'Career', 'Wellness', 'Food', 'Social', 'Gaming', 'Travel','Science', 'Film', 'Fashion', 'Fitness', 'Politics'
+    ];
     for (final name in interests) {
       await db.insert('interests', {'name': name});
     }
@@ -308,7 +312,36 @@ class DatabaseHelper {
     return Sqflite.firstIntValue(res) ?? 0;
   }
   //missions-------------------
+  Future<List<Mission>> getAllMissions() async {
+    final db = await database;
+    final res = await db.query('missions');
+    return res.map((r) => Mission.fromMap(r)).toList();
+  }
+
+  Future<int> updateMissionProgress(int missionId, int progress, int isCompleted) async {
+    final db = await database;
+    return await db.update(
+      'missions',
+      {'progress': progress, 'is_completed': isCompleted},
+      where: 'id = ?',
+      whereArgs: [missionId],
+    );
+  }
   //users progres/stats----------------
+   Future<Map<String, dynamic>?> getUserStats(int userId) async {
+    final db = await database;
+    final res = await db.query('user_stats', where: 'user_id = ?', whereArgs: [userId]);
+    if (res.isEmpty) return null;
+    return res.first;
+  }
+
+  Future<void> incrementEventsAttended(int userId) async {
+    final db = await database;
+    await db.rawUpdate(
+      'UPDATE user_stats SET events_attended = events_attended + 1 WHERE user_id = ?',
+      [userId],
+    );
+  }
   //notifications--------------------
   Future<int> createNotification(AppNotification n) async {
     final db = await database;
