@@ -68,6 +68,33 @@ class DatabaseHelper {
         FOREIGN KEY (interest_id) REFERENCES interests(id)
       )
     ''');
+
+    // Events
+    await db.execute('''
+      CREATE TABLE events (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        description TEXT,
+        location TEXT NOT NULL,
+        category TEXT NOT NULL,
+        date TEXT NOT NULL,
+        time TEXT NOT NULL,
+        created_by INTEGER,
+        FOREIGN KEY (created_by) REFERENCES users(id)
+      )
+    ''');
+
+    // RSVPs
+    await db.execute('''
+      CREATE TABLE rsvps (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        event_id INTEGER NOT NULL,
+        status TEXT NOT NULL,
+        FOREIGN KEY (user_id) REFERENCES users(id),
+        FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
+      )
+    ''');
   }
   //seed data--------------------
   Future _seedInterests(Database db) async {
