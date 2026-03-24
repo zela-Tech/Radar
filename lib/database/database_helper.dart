@@ -2,6 +2,9 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import '../models/user.dart';
+import '../models/event.dart';
+import '../models/missions.dart';
+import '../models/notifications.dart';
 
 
 // DatabaseHelper class - Singleton pattern
@@ -46,13 +49,43 @@ class DatabaseHelper {
         created_at TEXT NOT NULL
       )
     ''');
+
+    // for intersts (tech, music, sports, Arts,career,wellness, food, social)
+    await db.execute('''
+      CREATE TABLE interests (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL
+      )
+    ''');
+
+    //specfic users intrests
+    await db.execute('''
+      CREATE TABLE user_interests (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        interest_id INTEGER NOT NULL,
+        FOREIGN KEY (user_id) REFERENCES users(id),
+        FOREIGN KEY (interest_id) REFERENCES interests(id)
+      )
+    ''');
   }
-  
+  //seed data--------------------
+  Future _seedInterests(Database db) async {
+    final interests = ['Tech', 'Music', 'Sports', 'Arts', 'Career', 'Wellness', 'Food', 'Social'];
+    for (final name in interests) {
+      await db.insert('interests', {'name': name});
+    }
+  }
+
+
+
+  //for user-----------------------
   // CREATE User/registration
   Future<int> createUser(User user) async {
     final db = await instance.database;
     return await db.insert('users', user.toMap());
   }
+
   
   // READ - get user by email(for login)
   Future<User?> getUserByEmail(String email) async {
@@ -69,38 +102,6 @@ class DatabaseHelper {
     }else{
       return null;
     }
-  }
-  
-  // READ - Get single item by ID
-  Future<Map<String, dynamic>?> getItem(int id) async {
-    final db = await database;
-    final results = await db.query(
-      'items',
-      where: 'id = ?',
-      whereArgs: [id],
-    );
-    return results.isNotEmpty ? results.first : null;
-  }
-  
-  // UPDATE - Update existing item
-  Future<int> updateItem(int id, Map<String, dynamic> item) async {
-    final db = await database;
-    return await db.update(
-      'items',
-      item,
-      where: 'id = ?',
-      whereArgs: [id],
-    );
-  }
-  
-  // DELETE - Remove item
-  Future<int> deleteItem(int id) async {
-    final db = await database;
-    return await db.delete(
-      'items',
-      where: 'id = ?',
-      whereArgs: [id],
-    );
   }
   
   // Close database connection
