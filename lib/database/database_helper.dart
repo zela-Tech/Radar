@@ -274,9 +274,62 @@ class DatabaseHelper {
     return res.map((r) => Event.fromMap(r)).toList();
   }
   //rsvp-----------------------
+   Future<int> createRsvp(int userId, int eventId, String status) async {
+    final db = await database;
+    // this removes any  existing RSVPs if there are any
+    await db.delete('rsvps', where: 'user_id = ? AND event_id = ?', whereArgs: [userId, eventId]);
+    return await db.insert('rsvps', {'user_id': userId, 'event_id': eventId, 'status': status});
+  }
+
+  Future<String?> getRsvpStatus(int userId, int eventId) async {
+    final db = await database;
+    final res = await db.query('rsvps', where: 'user_id = ? AND event_id = ?', whereArgs: [userId, eventId]);
+    if (res.isEmpty) return null;
+    return res.first['status'] as String;
+  }
+
+  Future<List<Event>> getRsvpdEvents(int userId) async {
+    final db = await database;
+    final res = await db.rawQuery('''
+      SELECT e.* FROM events e
+      JOIN rsvps r ON e.id = r.event_id
+      WHERE r.user_id = ? AND r.status = 'going'
+      ORDER BY e.date ASC
+    ''', [userId]);
+    return res.map((r) => Event.fromMap(r)).toList();
+  }
+
+  Future<int> getRsvpCount(int eventId) async {
+    final db = await database;
+    final res = await db.rawQuery(
+      "SELECT COUNT(*) as count FROM rsvps WHERE event_id = ? AND status = 'going'",
+      [eventId],
+    );
+    return Sqflite.firstIntValue(res) ?? 0;
+  }
   //missions-------------------
   //users progres/stats----------------
   //notifications--------------------
+  Future<int> createNotification(AppNotification n) async {
+    final db = await database;
+    return await db.insert('notifications', n.toMap());
+  }
+
+  Future<List<AppNotification>> getNotificationsForUser(int userId) async {
+    final db = await database;
+    final res = await db.query(
+      'notifications',
+      where: 'user_id = ?',
+      whereArgs: [userId],
+      orderBy: 'created_at DESC',
+    );
+    return res.map((r) => AppNotification.fromMap(r)).toList();
+  }
+
+  Future<void> markNotificationRead(int id) async {
+    final db = await database;
+    await db.update('notifications', {'is_read': 1}, where: 'id = ?', whereArgs: [id]);
+  }
 
   // Close database connection
   Future close() async {
